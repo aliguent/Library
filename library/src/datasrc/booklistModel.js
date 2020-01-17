@@ -2,11 +2,24 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schemaBooks = new Schema({
-    title: String,
-    author: String,
+    title: {
+        type: String,
+        required: true
+    },
+    author:{
+        type: String,
+        required: true
+    },
     description: String,
-    year: Number,
-    lent: Boolean,
+    year: {
+        type: Number,
+        required: true
+    },
+    lent: {
+        type: Boolean,
+        required: true,
+        default : false
+    },
     lentBy: String
 }, {
     collection: 'booklist'

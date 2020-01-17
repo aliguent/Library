@@ -1,0 +1,42 @@
+body{
+    width: 100%;
+    margin: auto;
+    background-color: rgb(230, 220, 184);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+}
+
+h1{
+    font-size: 60px;
+    float: left;
+}
+
+.header-box{
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(122, 105, 84);
+    height: 100px;
+    margin-bottom: 8px;
+    font-size: 60px;
+    float: left;
+}
+
+.content-box{
+    background-color: rgba(122, 105, 84, 0.48);
+    height: auto;
+}
+
+.title{
+    margin-bottom: 8px;
+    font-size: 35px;
+}
+
+.content{
+    font-size: 25px;
+}
+
+.table{
+    font-size: 25px;
+}
+
+

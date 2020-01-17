@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Library</title>
     <link rel="stylesheet" href="index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 </head>
 <body>
     <div class="header-box">
@@ -13,8 +14,10 @@
         <div class="title">Books:</div>
     </div>
 
-    <script>
+    <div ng-app="">
+        <p>Name: <input type="text" ng-model="name"></p>
+        <p ng-bind="name"></p>
+    </div>
 
-    </script>
 </body>
 </html>
