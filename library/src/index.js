@@ -34,4 +34,13 @@ app.post("/api/library/addbook", (req, res) => {
         });
 });
 
+app.delete('/api/library/delete/:id', (req, res) => {
+    Booklist.findByIdAndDelete(req.params.id, (err) => {
+        if (err) return console.log(err);
+        console.log(req.body);
+        res.status(204).end()
+    })
+});
+
+
 app.listen(8080);

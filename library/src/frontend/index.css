@@ -10,14 +10,25 @@ h1{
     font-size: 60px;
 }
 
-.header-box{
+table{
+    table-layout: auto;
     width: 100%;
+}
+td {
+    border:3px solid white;
+    overflow:hidden;
+    vertical-align:top;
+}
+
+.header-box{
+    width: 98%;
     padding: 10px;
     background-color: rgb(122, 105, 84);
     height: 100px;
     margin-bottom: 8px;
     font-size: 60px;
     float: left;
+    text-align: center;
 }
 
 .content-box{
@@ -27,7 +38,7 @@ h1{
 
 .title{
     margin-bottom: 8px;
-    font-size: 35px;
+    font-size: 30px;
 }
 
 .content{

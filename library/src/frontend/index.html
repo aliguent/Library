@@ -12,8 +12,7 @@
     </div>
     <div class="content-box">
         <div class="title">Books:</div>
-    </div>
-    <!--<form method="get" action="/api/library">-->
+
         <div ng-app="tableApp" ng-controller="controllerApp">
             <table>
                 <tr>
@@ -26,40 +25,44 @@
                 </tr>
                 <tbody ng-repeat="m in Booklist">
                 <tr>
-                    <td>{{m.Title}}</td>
-                    <td>{{m.Author}}</td>
-                    <td>{{m.Description}}</td>
-                    <td>{{m.Year}}</td>
-                    <td>{{m.Status}}</td>
-                    <td><input type="button" ng-click="Remove($index)" value="Remove" /></td>
+                    <td>{{m.title}}</td>
+                    <td>{{m.author}}</td>
+                    <td>{{m.description}}</td>
+                    <td>{{m.year}}</td>
+                    <td>{{m.lent}}</td>
+                    <td><input type="button" ng-click="Remove($index)" value="Delete" /></td>
                 </tr>
                 </tbody>
             </table>
         </div>
-
         <a href="/newBook.html">Add a new book</a>
-    <!--</form>-->
-
+    </div>
     <script>
         var app = angular.module('tableApp', []);
-        app.controller('controllerApp', function ($scope, $window) {
-            $scope.Booklist = [
-                { CustomerId: 1, Title:"Test", Author: "John Hammond", Description: "Test test test", Year:"2020", Status: "Lent" },
-                { CustomerId: 2, Title:"Test2", Author: "Max Hammond", Description: "Test test", Year:"2000", Status: "Free" },
-                { CustomerId: 3, Title:"Test3", Author: "Anna Muster", Description: "Test test noch mal test", Year:"1995", Status: "Free" },
-                { CustomerId: 4, Title:"Test4", Author: "Marie Hamm", Description: "Test!!!", Year:"1890", Status: "Lent" },
-            ];
+        app.controller('controllerApp', function ($scope, $window, $http) {
+
+            $http.get("/api/library")
+            .then(function(response) {
+                console.log(response);
+                $scope.Booklist = response.data.obj
+            });
 
             $scope.Remove = function (index) {
-                //Find the record using Index from Array.
-                var title = $scope.Booklist[index].Title;
-                if ($window.confirm("Do you want to delete: " + title)) {
-                    //Remove the item from Array using Index.
-                    $scope.Booklist.splice(index, 1);
+                var book = $scope.Booklist[index];
+                if ($window.confirm("Do you want to delete: " + book.title + "?")) {
+                    $http.delete("/api/library/delete/"+book._id)
+                        .then(function(response) {
+                            if(response.status===204) {
+                                console.log(response);
+                                $scope.Booklist.splice(index, 1);
+                                }
+                            else {
+                                console.log("Something went wrong!")
+                            }
+                        });
                 }
             }
         });
-
     </script>
 </body>
 </html>
