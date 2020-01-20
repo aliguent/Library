@@ -26,7 +26,7 @@ app.post("/api/library/addbook", (req, res) => {
     var newBook = new Booklist(req.body);
     newBook.save()
         .then(item => {
-            res.send("Book saved to database");
+            console.log("Book saved to database");
             res.redirect("/")
         })
         .catch(err => {

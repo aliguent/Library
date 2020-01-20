@@ -13,11 +13,53 @@
     <div class="content-box">
         <div class="title">Books:</div>
     </div>
+    <!--<form method="get" action="/api/library">-->
+        <div ng-app="tableApp" ng-controller="controllerApp">
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Description</th>
+                    <th>Year</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+                <tbody ng-repeat="m in Booklist">
+                <tr>
+                    <td>{{m.Title}}</td>
+                    <td>{{m.Author}}</td>
+                    <td>{{m.Description}}</td>
+                    <td>{{m.Year}}</td>
+                    <td>{{m.Status}}</td>
+                    <td><input type="button" ng-click="Remove($index)" value="Remove" /></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <div ng-app="">
-        <p>Name: <input type="text" ng-model="name"></p>
-        <p ng-bind="name"></p>
-    </div>
+        <a href="/newBook.html">Add a new book</a>
+    <!--</form>-->
 
+    <script>
+        var app = angular.module('tableApp', []);
+        app.controller('controllerApp', function ($scope, $window) {
+            $scope.Booklist = [
+                { CustomerId: 1, Title:"Test", Author: "John Hammond", Description: "Test test test", Year:"2020", Status: "Lent" },
+                { CustomerId: 2, Title:"Test2", Author: "Max Hammond", Description: "Test test", Year:"2000", Status: "Free" },
+                { CustomerId: 3, Title:"Test3", Author: "Anna Muster", Description: "Test test noch mal test", Year:"1995", Status: "Free" },
+                { CustomerId: 4, Title:"Test4", Author: "Marie Hamm", Description: "Test!!!", Year:"1890", Status: "Lent" },
+            ];
+
+            $scope.Remove = function (index) {
+                //Find the record using Index from Array.
+                var title = $scope.Booklist[index].Title;
+                if ($window.confirm("Do you want to delete: " + title)) {
+                    //Remove the item from Array using Index.
+                    $scope.Booklist.splice(index, 1);
+                }
+            }
+        });
+
+    </script>
 </body>
 </html>
