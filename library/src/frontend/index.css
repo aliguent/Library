@@ -21,13 +21,11 @@ td {
 }
 
 .header-box{
-    width: 98%;
-    padding: 10px;
+    width: 100%;
+    background-image: url("https://back2spirit.de/wp-content/uploads/2017/12/alfons-morales-410757-e1512750374459.jpg");
     background-color: rgb(122, 105, 84);
     height: 100px;
-    margin-bottom: 8px;
-    font-size: 60px;
-    float: left;
+    font-size: 70px;
     text-align: center;
 }
 

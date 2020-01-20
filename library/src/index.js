@@ -5,10 +5,6 @@ const Booklist = require('./datasrc/booklistModel');
 const bodyParser=require("body-parser");
 const mongoose = require('mongoose');
 
-// Library > /api/library
-// Book > /api/library/book
-//
-
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/frontend'));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -22,7 +18,21 @@ app.get("/api/library", async function(req, res){
     await res.json({obj})
 });
 
-app.post("/api/library/addbook", (req, res) => {
+app.post("/api/library/lend", function(req, res) {
+    Booklist.findByIdAndUpdate(
+        req.params.id,
+        { lent: "!lent", lentBy: "Name" },
+        function(err, result) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.send(result);
+            }
+        }
+    );
+});
+
+app.post("/api/library/addbook", function(req, res) {
     var newBook = new Booklist(req.body);
     newBook.save()
         .then(item => {
@@ -34,7 +44,7 @@ app.post("/api/library/addbook", (req, res) => {
         });
 });
 
-app.delete('/api/library/delete/:id', (req, res) => {
+app.delete('/api/library/delete/:id', function(req, res) {
     Booklist.findByIdAndDelete(req.params.id, (err) => {
         if (err) return console.log(err);
         console.log(req.body);
