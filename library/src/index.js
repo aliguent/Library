@@ -18,10 +18,10 @@ app.get("/api/library", async function(req, res){
     res.json(obj)
 });
 
-app.patch("/api/library/lend/:id/:lentBy", function(req, res) {
+app.patch("/api/library/lend", function(req, res) {
     Booklist.findByIdAndUpdate(
-        req.params.id,
-        { lent: true, lentBy: req.params.lentBy },
+        req.body.id,
+        { lent: true, lentBy: req.body.lentBy },
         function(err, result) {
             if (err) {
                 res.send(err);
