@@ -31,17 +31,23 @@
                     <td>{{m.description}}</td>
                     <td>{{m.year}}</td>
                     <td>
-                        <div ng-if="m.lent==false">Available </div>
-                        <div ng-if="m.lent!=false">Lent </div>
+                        <div ng-if="m.lent==false" style="color:green">Available </div>
+                        <div ng-if="m.lent==true" style="color:red">Lent </div>
                     </td>
                     <td>
-                        <input type="text" ng-model="lentBy" placeholder="Enter your name...">
-                        <input type="button" ng-click="Lend()" value="Lend book"/>
+                        <div ng-if="m.lent==false">
+                            <input type="text" ng-model="m.lentBy" placeholder="Enter your name..." required>
+                            <input type="button" ng-click="Lend($index)" value="Lend book"/>
+                        </div>
+                        <div ng-if="m.lent==true">
+                            Lent by: {{m.lentBy}}
+                            <input type="button" ng-click="Return($index)" value="Return book"/>
+                        </div>
                     </td>
-                    <td><input type="button" ng-click="Delete($index)" value="Delete" /></td>
+                    <td><input type="button" ng-click="Delete($index)" value="Delete book" /></td>
                 </tr>
                 </tbody>
-<!--
+
                 <tfoot>
                     <tr>
                         <td><input type="text" ng-model="title" /></td>
@@ -53,7 +59,6 @@
                         <td><input type="button" ng-click="Add()" value="Add" /></td>
                     </tr>
                 </tfoot>
--->
             </table>
         </div>
         <a href="/newBook.html">Add a new book</a>
@@ -65,35 +70,59 @@
             $http.get("/api/library")
             .then(function(response) {
                 console.log(response);
-                $scope.Booklist = response.data.obj
+                $scope.Booklist = response.data
             });
 
-            $scope.Lend = function(){
-                $http.post("/api/library/lend")
-                
+            $scope.Lend = function(index){
+                var book = $scope.Booklist[index];
+                console.log(book);
+                $http.patch("/api/library/lend/"+book._id+"/"+book.lentBy)
+                .then(function (response) {
+                    if(response.status===204) {
+                        console.log(response);
+                        $scope.Booklist[index].lent = true;
+                    }
+                    else {
+                        console.log("Something went wrong!")
+                    }
+                });
             };
 
-/*
+            $scope.Return = function(index){
+                var book = $scope.Booklist[index];
+                $http.patch("/api/library/return/"+book._id)
+                .then(function (response) {
+                    if (response.status === 204) {
+                        console.log(response);
+                        $scope.Booklist[index].lent = false;
+                        $scope.Booklist[index].lentBy = "";
+                    } else {
+                        console.log("Something went wrong!")
+                    }
+                });
+            };
+
+
             $scope.Add = function () {
                 //Add the new item to the Array.
-                 $http.post("/api/library/addbook")
+                var book = {};
+                book.title = $scope.title;
+                book.author = $scope.author;
+                book.description = $scope.description;
+                book.year = $scope.year;
+                $http.post("/api/library/addbook", book)
                     .then(function (response) {
-                        var book = {};
-                        book.title = $scope.title;
-                        book.author = $scope.author;
-                        book.description = $scope.description;
-                        book.year = $scope.year;
-                        book.lent = $scope.lent;
-                        $scope.Booklist.push(book);
-                        });
-                        //Clear the TextBoxes.
-                        $scope.title = "";
-                        $scope.author = "";
-                        $scope.description = "";
-                        $scope.year = "";
-                        $scope.lent = "";
+                        console.log(response);
+                        $scope.Booklist.push(response.data);
+                    });
+                //Clear the TextBoxes.
+                $scope.title = "";
+                $scope.author = "";
+                $scope.description = "";
+                $scope.year = "";
+                $scope.lent = "";
             };
-*/
+
 
             $scope.Delete = function (index) {
                 var book = $scope.Booklist[index];

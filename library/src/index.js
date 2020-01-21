@@ -15,18 +15,32 @@ app.get("/api/library", async function(req, res){
         return booklist
     });
     res.status(200);
-    await res.json({obj})
+    res.json(obj)
 });
 
-app.post("/api/library/lend", function(req, res) {
+app.patch("/api/library/lend/:id/:lentBy", function(req, res) {
     Booklist.findByIdAndUpdate(
         req.params.id,
-        { lent: "!lent", lentBy: "Name" },
+        { lent: true, lentBy: req.params.lentBy },
         function(err, result) {
             if (err) {
                 res.send(err);
             } else {
-                res.send(result);
+                res.status(204).send(result);
+            }
+        }
+    );
+});
+
+app.patch("/api/library/return/:id", function(req, res) {
+    Booklist.findByIdAndUpdate(
+        req.params.id,
+        { lent: false, lentBy: "" },
+        function(err, result) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(204).send(result);
             }
         }
     );
@@ -37,7 +51,7 @@ app.post("/api/library/addbook", function(req, res) {
     newBook.save()
         .then(item => {
             console.log("Book saved to database");
-            res.redirect("/")
+            res.status(203).send(newBook);
         })
         .catch(err => {
             res.status(400).send("unable to save to database");
