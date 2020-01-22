@@ -1,4 +1,4 @@
-var app = angular.module('tableApp', []);
+const app = angular.module('tableApp', []);
 app.controller('controllerApp', function ($scope, $window, $http) {
 
     $http.get("/api/library")
@@ -8,7 +8,7 @@ app.controller('controllerApp', function ($scope, $window, $http) {
         });
 
     $scope.Lend = function(index){
-        var book = $scope.Booklist[index];
+        let book = $scope.Booklist[index];
         console.log(book);
         $http.patch("/api/library/lend", {id:book._id, lentBy:book.lentBy})
             .then(function (response) {
@@ -23,7 +23,7 @@ app.controller('controllerApp', function ($scope, $window, $http) {
     };
 
     $scope.Return = function(index){
-        var book = $scope.Booklist[index];
+        let book = $scope.Booklist[index];
         $http.patch("/api/library/return/"+book._id)
             .then(function (response) {
                 if (response.status === 204) {
@@ -39,7 +39,7 @@ app.controller('controllerApp', function ($scope, $window, $http) {
 
     $scope.Add = function () {
         //Add the new item to the Array.
-        var book = {};
+        let book = {};
         book.title = $scope.title;
         book.author = $scope.author;
         book.description = $scope.description;
@@ -59,7 +59,7 @@ app.controller('controllerApp', function ($scope, $window, $http) {
 
 
     $scope.Delete = function (index) {
-        var book = $scope.Booklist[index];
+        let book = $scope.Booklist[index];
         if ($window.confirm("Do you want to delete: " + book.title + "?")) {
             $http.delete("/api/library/delete/"+book._id)
                 .then(function(response) {
